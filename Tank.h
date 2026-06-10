@@ -23,5 +23,6 @@ private:
 	int hModel_;//タンクモデルのハンドル
 	float speed_;//移動速度
 	float rotateSpeed_;//回転速度
+	int cam_type_;//カメラの種類
 };
 
