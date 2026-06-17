@@ -19,6 +19,10 @@ public:
 
 	//開放
 	void Release() override;
+	void SetFixedCamera();
+	void SetTPSCamera();
+	void SetFPSCamera();
+
 private:
 	int hModel_;//タンクモデルのハンドル
 	float speed_;//移動速度

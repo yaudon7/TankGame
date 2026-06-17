@@ -3,9 +3,13 @@
 #include "Engine/Input.h"
 #include "Engine//Debug.h"	
 #include "Ground.h"
+#include "Engine/Camera.h"
 namespace
 {
 	XMVECTOR vFront = { 0,0,1,0 };//前方向ベクトル
+	const float CAM_FPS_HEIGHT_BIAS_Y = 0.2f;//カメラの高さのバイアス
+	const float CAM_TPS_HEIGHT_BIAS_Y = 3.0f;
+	const float CAM_TPS_HEIGHT_BIAS_Z = -7.0f;
 	enum CAM_TYPE
 	{
 		FIXED_CAM,//固定カメラ
@@ -35,32 +39,62 @@ void Tank::Initialize()
 
 void Tank::Update()
 {
-	if (Input::IsKeyDown(DIK_C))
-	{
-		cam_type_ = (cam_type_ + 1) % CAM_TYPE_MAX;
-	}
-	switch (cam_type_)
-	{
-	case FIXED_CAM:
-		//固定カメラの処理
-		break;
-	case TPS_CAM:
-		//TPSカメラの処理
-		break;
-	case TPS_CAMROT:
-		break;
-	case FPS_CAM:
-		break;
-	}
-
-	float dt = 1.0f / 60.0f;
-
 	//移動ベクトルの計算
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
 	//Y軸回転行列を作る
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
 	//ベクトルを行列で変換する関数
 	XMVECTOR vMove = XMVector3TransformCoord(vFront, matRot);
+
+	if (Input::IsKeyDown(DIK_C))
+	{
+		cam_type_ = (cam_type_ + 1) % CAM_TYPE_MAX;
+	}
+
+	switch (cam_type_)
+	{
+	case FIXED_CAM:
+	{
+		//固定カメラの処理
+		SetFixedCamera();
+		break;
+	}
+	case TPS_CAM:
+	{
+		//TPSカメラの処理
+		XMFLOAT3 camPos = transform_.position_;
+		camPos.y = camPos.y + CAM_TPS_HEIGHT_BIAS_Y;
+		camPos.z = camPos.z - CAM_TPS_HEIGHT_BIAS_Z;
+		Camera::SetPosition(camPos);
+		Camera::SetTarget(transform_.position_);
+		break;
+	}
+	case TPS_CAMROT:
+	{
+		XMFLOAT3 camPos;
+		XMVECTOR vCam = { 0.0f, CAM_TPS_HEIGHT_BIAS_Y, CAM_TPS_HEIGHT_BIAS_Z, 0.0f };
+		vCam = XMVector3TransformCoord(vCam, matRot);
+		XMStoreFloat3(&camPos, vPos + vCam);
+		Camera::SetPosition(camPos);
+		Camera::SetTarget(transform_.position_);
+		break;
+	}
+	case FPS_CAM:
+	{
+		XMFLOAT3 camPos = transform_.position_;
+		camPos.y = camPos.y + CAM_FPS_HEIGHT_BIAS_Y;
+		Camera::SetPosition(camPos);
+		XMFLOAT3 camTarget;
+		XMStoreFloat3(&camTarget, vPos + vMove);
+		Camera::SetTarget(camTarget);
+		break;
+	}
+	}
+	
+	
+
+	float dt = 1.0f / 60.0f;
+
 	Debug::Log("CAMTYPE = ");
 	//後ろは改行するかどうか
 	Debug::Log(cam_type_, true);
@@ -106,4 +140,19 @@ void Tank::Draw()
 
 void Tank::Release()
 {
+}
+
+void Tank::SetFixedCamera()
+{
+	Camera::SetTarget(XMFLOAT3(0, 0, 0));
+	Camera::SetPosition(XMFLOAT3(0, 20, -30));
+}
+
+void Tank::SetTPSCamera()
+{
+}
+
+void Tank::SetFPSCamera()
+{
+	
 }
