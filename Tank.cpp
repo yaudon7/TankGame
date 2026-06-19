@@ -4,6 +4,8 @@
 #include "Engine//Debug.h"	
 #include "Ground.h"
 #include "Engine/Camera.h"
+#include "TankHead.h"
+
 namespace
 {
 	XMVECTOR vFront = { 0,0,1,0 };//前方向ベクトル
@@ -21,10 +23,8 @@ namespace
 }
 //タンクのボディを表すクラス
 Tank::Tank(GameObject* parent)
-	:GameObject(parent,"Tank"),hModel_(-1),cam_type_(FIXED_CAM)
+	:GameObject(parent, "Tank"), hModel_(-1), cam_type_(FIXED_CAM)
 {
-	hModel_ = Model::Load("Tankbody.fbx");
-	assert(hModel_ > 0);
 }
 
 Tank::~Tank()
@@ -33,8 +33,11 @@ Tank::~Tank()
 
 void Tank::Initialize()
 {
-	speed_ = 1.0f;
+	speed_ = 3.0f;
 	rotateSpeed_ = 1.0f;
+	hModel_ = Model::Load("Tankbody.fbx");
+	assert(hModel_ > 0);
+	Instantiate<TankHead>(this);//タンクを親にして生成
 }
 
 void Tank::Update()
@@ -113,6 +116,7 @@ void Tank::Update()
 	if (Input::IsKey(DIK_D)) {
 		transform_.rotate_.y += rotateSpeed_;
 	}
+
 
 	//レイキャストして、浮いたら、地面まで落とす
 	RayCastData data;

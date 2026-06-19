@@ -1,18 +1,19 @@
 #pragma once
 #include "Engine/GameObject.h"
-
-
-class TankHead :public GameObject
+class TankBullet :
+    public GameObject
 {
 public:
-	TankHead(GameObject* parent);
-	~TankHead() {}
+	TankBullet(GameObject* parent);
+	~TankBullet() {}
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 	void Release() override;
+	void SetMoveVector(XMFLOAT3 move) { move_ = move; }
 private:
+	XMFLOAT3 move_;;//弾の進行方向
 	int hModel_;//タンクモデルのハンドル
-	float rotate_speed_;
+	float radius;
 };
 

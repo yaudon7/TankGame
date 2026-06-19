@@ -1,7 +1,11 @@
 #include "PlayScene.h"
 #include "Ground.h"
 #include "Tank.h"
-#include "TankHead.h"
+#include "Enemy.h"
+
+namespace {
+	const int ENEMY_MAX = 10;
+}
 
 PlayScene::PlayScene(GameObject* parent)
 	:GameObject(parent,"PlayScene")
@@ -12,7 +16,10 @@ void PlayScene::Initialize()
 {
 	Instantiate<Ground>(this);//親をPlaySceneにして地面を生成
 	Instantiate<Tank>(this);
-	Instantiate<TankHead>(this);
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		Instantiate<Enemy>(this);
+	}
 }
 
 void PlayScene::Update()
