@@ -1,5 +1,9 @@
 #pragma once
 #include "Engine//GameObject.h"
+#include "TankBullet.h"
+//前方宣言
+class PlayScene;
+
 class Enemy :
     public GameObject
 {
@@ -10,8 +14,10 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Release() override;
+	void OnCollision(GameObject* pTarget);
 private:
 	int hModel_;//タンクモデルのハンドル
-	float radius;
+	TankBullet* pbullet = (TankBullet*)FindObject("TankBullet");
+	PlayScene* scene;
 };
 

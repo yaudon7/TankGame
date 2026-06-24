@@ -10,14 +10,15 @@ void TankBullet::Initialize()
 {
 	hModel_ = Model::Load("Bullet.fbx");
 	move_ = XMFLOAT3{ 0,0,0 };
-	radius = 1.0f;
+	Collider* collider = new SphereCollider({ 0,0,0 }, 0.25f);
+	AddCollider(collider);
 }
 
 
 void TankBullet::Update()
 {
 	
-	const float gravity = 0.01f;
+	const float gravity = 0.005f;
 	move_.y -= gravity;
 
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
@@ -27,8 +28,7 @@ void TankBullet::Update()
 
 	XMStoreFloat3(&transform_.position_, vPos);
 
-	if (transform_.position_.z > 50.0f || transform_.position_.z < -50.0f ||
-		transform_.position_.x > 50.0f || transform_.position_.x < -50.0f)
+	if (transform_.position_.y < -50.0f)
 	{
 		KillMe();
 	}

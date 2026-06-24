@@ -14,6 +14,5 @@ public:
 private:
 	XMFLOAT3 move_;;//弾の進行方向
 	int hModel_;//タンクモデルのハンドル
-	float radius;
 };
 

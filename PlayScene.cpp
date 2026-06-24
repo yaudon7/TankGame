@@ -2,6 +2,7 @@
 #include "Ground.h"
 #include "Tank.h"
 #include "Enemy.h"
+#include <iostream>
 
 namespace {
 	const int ENEMY_MAX = 10;
@@ -28,6 +29,7 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
+	std::cout << "SCORE:" << score_;
 }
 
 void PlayScene::Release()

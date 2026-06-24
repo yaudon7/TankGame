@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Engine/Model.h"
 #include "Ground.h"
+#include "PlayScene.h"
 #include <random>
 
 Enemy::Enemy(GameObject* parent)
@@ -11,11 +12,17 @@ Enemy::Enemy(GameObject* parent)
 void Enemy::Initialize()
 {
 	hModel_ = Model::Load("Enemy.fbx");
+	Model::SetAnimFrame(hModel_, 1, 100, 1.0f);//1Fから100Fまで等速で再生
 
 	static std::mt19937 mt(std::random_device{}());
 	std::uniform_real_distribution<float> dist(-25.0f, 25.0f);
 
 	transform_.position_ = { dist(mt),0,dist(mt) };
+
+	Collider* collider = new SphereCollider({ 0,0,0 }, 0.5f);
+	AddCollider(collider);
+
+	TankBullet* pbullet = (TankBullet*)FindObject("TankBullet");
 }
 
 void Enemy::Update()
@@ -37,7 +44,9 @@ void Enemy::Update()
 		transform_.position_.y = -data.dist;
 	}
 
-	
+	if (pbullet) {
+		OnCollision(pbullet);
+	}
 }
 
 void Enemy::Draw()
@@ -48,4 +57,18 @@ void Enemy::Draw()
 
 void Enemy::Release()
 {
+}
+
+void Enemy::OnCollision(GameObject* pTarget)
+{
+	if (pTarget == nullptr)
+	{
+		return;
+	}
+	scene->AddScore();
+
+	this->KillMe();
+	pTarget->KillMe();
+
+	
 }
