@@ -11,7 +11,7 @@ Enemy::Enemy(GameObject* parent)
 
 void Enemy::Initialize()
 {
-	hModel_ = Model::Load("Enemy.fbx");
+	hModel_ = Model::Load("zassou.fbx");
 	Model::SetAnimFrame(hModel_, 1, 100, 1.0f);//1Fから100Fまで等速で再生
 
 	static std::mt19937 mt(std::random_device{}());
@@ -19,7 +19,7 @@ void Enemy::Initialize()
 
 	transform_.position_ = { dist(mt),0,dist(mt) };
 
-	Collider* collider = new SphereCollider({ 0,0,0 }, 0.5f);
+	Collider* collider = new SphereCollider({ 0,0,0 }, 1.0f);
 	AddCollider(collider);
 
 	TankBullet* pbullet = (TankBullet*)FindObject("TankBullet");
@@ -65,7 +65,6 @@ void Enemy::OnCollision(GameObject* pTarget)
 	{
 		return;
 	}
-	scene->AddScore();
 
 	this->KillMe();
 	pTarget->KillMe();

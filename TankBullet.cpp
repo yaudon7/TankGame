@@ -18,7 +18,7 @@ void TankBullet::Initialize()
 void TankBullet::Update()
 {
 	
-	const float gravity = 0.005f;
+	const float gravity = 0.01f;
 	move_.y -= gravity;
 
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);

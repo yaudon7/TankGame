@@ -1,8 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-//前方宣言
-class Enemy;
 
 class PlayScene :
     public GameObject
@@ -23,8 +21,6 @@ public:
 
 	//開放
 	void Release() override;
-	void AddScore() { score_ += 100; }
 private:
-	int score_ = 0;
 };
 

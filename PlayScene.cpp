@@ -29,7 +29,6 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
-	std::cout << "SCORE:" << score_;
 }
 
 void PlayScene::Release()

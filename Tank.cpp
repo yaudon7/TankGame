@@ -109,6 +109,13 @@ void Tank::Update()
 		XMStoreFloat3(&transform_.position_, vPos);
 	}
 
+	//sキーを押している間後方に進む
+	if (Input::IsKey(DIK_S)) {
+		vPos -= vMove * speed_ * dt;
+		//位置を書き込み
+		XMStoreFloat3(&transform_.position_, vPos);
+	}
+
 	//回転
 	if (Input::IsKey(DIK_A)) {
 		transform_.rotate_.y -= rotateSpeed_;
