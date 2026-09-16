@@ -1,11 +1,10 @@
 #pragma once
 #include "Engine/GameObject.h"
+
 class Ground :
-    public GameObject
+	public GameObject
 {
 public:
-	//コンストラクタ
-	//引数：parent  親オブジェクト（SceneManager）
 	Ground(GameObject* parent);
 	~Ground();
 	void Initialize() override;
@@ -15,5 +14,6 @@ public:
 	int GetModelHandle() { return hModel_; }
 private:
 	//地面モデルのハンドル
-	int hModel_;};
+	int hModel_;
+};
 

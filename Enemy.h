@@ -17,7 +17,7 @@ public:
 	void OnCollision(GameObject* pTarget);
 private:
 	int hModel_;//タンクモデルのハンドル
-	TankBullet* pbullet = (TankBullet*)FindObject("TankBullet");
-	PlayScene* scene;
+	TankBullet* pbullet = (TankBullet*)FindObject("TankBullet");//TankBulletのアドレスを保持する変数
+	PlayScene* scene;//PlaySceneのアドレスを保持する変数
 };
 

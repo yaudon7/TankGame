@@ -1,7 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-
 class TankHead :public GameObject
 {
 public:
@@ -13,6 +12,6 @@ public:
 	void Release() override;
 private:
 	int hModel_;//タンクモデルのハンドル
-	float rotate_speed_;
+	float rotate_speed_;//headの回転速度
 };
 
